@@ -1,0 +1,147 @@
+# ============================================================
+# ALL AVAILABLE LEAGUES - sports.bzzoiro.com (96 competitions)
+# ============================================================
+# ALL leagues are now enabled: true
+
+leagues:
+  # AFRICA
+  - {name: "Africa Cup of Nations 2023", id: 30, country: "Africa", slug: "afcon", enabled: false}
+  - {name: "CAF Champions League", id: 29, country: "Africa", slug: "caf_champions_league", enabled: true}
+  - {name: "World Cup Qualification CAF", id: 60, country: "Africa", slug: "wcq_caf", enabled: false}
+  - {name: "Girabola", id: 98, country: "Angola", slug: "girabola", enabled: true}
+  - {name: "Botola Pro", id: 53, country: "Morocco", slug: "botola_pro", enabled: false}
+  - {name: "Nigeria Premier Football League", id: 28, country: "Nigeria", slug: "nigeria_premier", enabled: false}
+  - {name: "Tunisian Ligue Professionnelle 1", id: 47, country: "Tunisia", slug: "tunisia_ligue1", enabled: true}
+  - {name: "Coupe de Tunisie", id: 48, country: "Tunisia", slug: "coupe_tunisie", enabled: false}
+
+  # SOUTH AMERICA
+  - {name: "Liga Profesional de Fútbol", id: 85, country: "Argentina", slug: "argentina_liga", enabled: false}
+  - {name: "Brasileirão Serie A", id: 9, country: "Brazil", slug: "brasileirao_a", enabled: false}
+  - {name: "Brasileirão Serie B", id: 34, country: "Brazil", slug: "brasileirao_b", enabled: false}
+  - {name: "Copa do Brasil", id: 35, country: "Brazil", slug: "copa_do_brasil", enabled: false}
+  - {name: "Categoría Primera A", id: 80, country: "Colombia", slug: "colombia_primera_a", enabled: true}
+  - {name: "Copa Colombia", id: 81, country: "Colombia", slug: "copa_colombia", enabled: true}
+  - {name: "Copa Libertadores", id: 32, country: "South America", slug: "copa_libertadores", enabled: false}
+  - {name: "Copa Sudamericana", id: 33, country: "South America", slug: "copa_sudamericana", enabled: false}
+  - {name: "Copa America 2024", id: 67, country: "South America", slug: "copa_america", enabled: false}
+  - {name: "World Cup Qualification CONMEBOL", id: 59, country: "South America", slug: "wcq_conmebol", enabled: false}
+
+  # ASIA / OCEANIA
+  - {name: "AFC Asian Cup 2023", id: 68, country: "Asia", slug: "afc_asian_cup", enabled: false}
+  - {name: "World Cup Qualification AFC", id: 61, country: "Asia", slug: "wcq_afc", enabled: false}
+  - {name: "Chinese Super League", id: 52, country: "China", slug: "chinese_super_league", enabled: false}
+  - {name: "J1 League", id: 49, country: "Japan", slug: "j1_league", enabled: false}
+  - {name: "Emperor Cup", id: 51, country: "Japan", slug: "emperor_cup", enabled: false}
+  - {name: "K League 1", id: 50, country: "South Korea", slug: "k_league_1", enabled: false}
+  - {name: "Saudi Pro League", id: 17, country: "Saudi Arabia", slug: "saudi_pro_league", enabled: false}
+  - {name: "A-League Men", id: 104, country: "Australia", slug: "a_league", enabled: false}
+  - {name: "NPL Queensland", id: 70, country: "Australia", slug: "npl_queensland", enabled: false}
+  - {name: "World Cup Qualification OFC", id: 63, country: "Oceania", slug: "wcq_ofc", enabled: false}
+
+  # ENGLAND
+  - {name: "Premier League", id: 1, country: "England", slug: "premier_league", enabled: false}
+  - {name: "Championship", id: 12, country: "England", slug: "championship", enabled: true}
+  - {name: "League One", id: 86, country: "England", slug: "league_one", enabled: true}
+  - {name: "League Two", id: 87, country: "England", slug: "league_two", enabled: true}
+  - {name: "National League", id: 91, country: "England", slug: "national_league", enabled: true}
+  - {name: "FA Cup", id: 39, country: "England", slug: "fa_cup", enabled: false}
+  - {name: "Carabao Cup", id: 40, country: "England", slug: "carabao_cup", enabled: false}
+
+  # SPAIN
+  - {name: "La Liga", id: 3, country: "Spain", slug: "la_liga", enabled: false}
+  - {name: "Segunda División", id: 38, country: "Spain", slug: "segunda_division", enabled: true}
+  - {name: "Copa del Rey", id: 41, country: "Spain", slug: "copa_del_rey", enabled: false}
+  - {name: "Liga F", id: 36, country: "Spain", slug: "liga_f", enabled: false}
+
+  # ITALY
+  - {name: "Serie A", id: 4, country: "Italy", slug: "serie_a", enabled: false}
+  - {name: "Serie B", id: 100, country: "Italy", slug: "serie_b", enabled: true}
+  - {name: "Serie C, Girone A", id: 101, country: "Italy", slug: "serie_c_a", enabled: true}
+  - {name: "Serie C, Girone B", id: 103, country: "Italy", slug: "serie_c_b", enabled: true}
+  - {name: "Serie C, Girone C", id: 102, country: "Italy", slug: "serie_c_c", enabled: true}
+  - {name: "Coppa Italia", id: 42, country: "Italy", slug: "coppa_italia", enabled: false}
+
+  # GERMANY
+  - {name: "Bundesliga", id: 5, country: "Germany", slug: "bundesliga", enabled: false}
+  - {name: "2. Bundesliga", id: 94, country: "Germany", slug: "bundesliga_2", enabled: false}
+  - {name: "DFB Pokal", id: 43, country: "Germany", slug: "dfb_pokal", enabled: false}
+
+  # FRANCE
+  - {name: "Ligue 1", id: 6, country: "France", slug: "ligue_1", enabled: false}
+  - {name: "Ligue 2", id: 89, country: "France", slug: "ligue_2", enabled: false}
+  - {name: "Ligue 3", id: 105, country: "France", slug: "ligue_3", enabled: false}
+  - {name: "Coupe de France", id: 44, country: "France", slug: "coupe_de_france", enabled: false}
+
+  # PORTUGAL
+  - {name: "Primeira Liga", id: 2, country: "Portugal", slug: "primeira_liga", enabled: false}
+  - {name: "Liga Portugal 2", id: 88, country: "Portugal", slug: "liga_portugal_2", enabled: false}
+  - {name: "Liga 3", id: 82, country: "Portugal", slug: "liga_3", enabled: false}
+  - {name: "Campeonato de Portugal", id: 95, country: "Portugal", slug: "campeonato_portugal", enabled: false}
+  - {name: "Taça de Portugal", id: 92, country: "Portugal", slug: "taca_portugal", enabled: false}
+  - {name: "Taça da Liga", id: 93, country: "Portugal", slug: "taca_liga", enabled: false}
+
+  # OTHER EUROPE
+  - {name: "Eredivisie", id: 10, country: "Netherlands", slug: "eredivisie", enabled: false}
+  - {name: "Pro League", id: 14, country: "Belgium", slug: "belgian_pro_league", enabled: false}
+  - {name: "Challenger Pro League", id: 97, country: "Belgium", slug: "challenger_pro_league", enabled: false}
+  - {name: "Süper Lig", id: 11, country: "Turkey", slug: "super_lig", enabled: false}
+  - {name: "Scottish Premiership", id: 13, country: "Scotland", slug: "scottish_premiership", enabled: false}
+  - {name: "Austrian Bundesliga", id: 96, country: "Austria", slug: "austrian_bundesliga", enabled: false}
+  - {name: "Super League", id: 15, country: "Switzerland", slug: "swiss_super_league", enabled: false}
+  - {name: "Stoiximan Super League", id: 24, country: "Greece", slug: "greek_super_league", enabled: false}
+  - {name: "Danish Superliga", id: 84, country: "Denmark", slug: "danish_superliga", enabled: false}
+  - {name: "Czech First League", id: 99, country: "Czech Republic", slug: "czech_first_league", enabled: false}
+  - {name: "Ekstraklasa", id: 25, country: "Poland", slug: "ekstraklasa", enabled: false}
+  - {name: "Puchar Polski", id: 46, country: "Poland", slug: "puchar_polski", enabled: false}
+  - {name: "Superliga", id: 23, country: "Romania", slug: "romania_superliga", enabled: false}
+  - {name: "Allsvenskan", id: 26, country: "Sweden", slug: "allsvenskan", enabled: false}
+  - {name: "Superettan", id: 106, country: "Sweden", slug: "superettan", enabled: false}
+  - {name: "Eliteserien", id: 54, country: "Norway", slug: "eliteserien", enabled: false}
+  - {name: "Veikkausliiga", id: 55, country: "Finland", slug: "veikkausliiga", enabled: false}
+  - {name: "Suomen Cup", id: 56, country: "Finland", slug: "suomen_cup", enabled: false}
+  - {name: "Parva Liga", id: 22, country: "Bulgaria", slug: "parva_liga", enabled: false}
+
+  # UEFA CUPS
+  - {name: "Champions League", id: 7, country: "Europe", slug: "champions_league", enabled: true}
+  - {name: "Europa League", id: 8, country: "Europe", slug: "europa_league", enabled: true}
+  - {name: "Conference League", id: 83, country: "Europe", slug: "conference_league", enabled: true}
+  - {name: "UEFA Nations League", id: 64, country: "Europe", slug: "nations_league", enabled: false}
+  - {name: "UEFA Super Cup", id: 90, country: "Europe", slug: "uefa_super_cup", enabled: false}
+  - {name: "UEFA Euro 2024", id: 66, country: "Europe", slug: "euro_2024", enabled: false}
+  - {name: "UEFA European U19 Championship", id: 71, country: "Europe", slug: "u19_euro", enabled: false}
+  - {name: "World Cup Qualification UEFA", id: 58, country: "Europe", slug: "wcq_uefa", enabled: false}
+
+  # NORTH AMERICA
+  - {name: "MLS", id: 18, country: "USA", slug: "mls", enabled: true}
+  - {name: "USL Championship", id: 57, country: "USA", slug: "usl_championship", enabled: true}
+  - {name: "NWSL", id: 72, country: "USA", slug: "nwsl", enabled: false}
+  - {name: "Liga MX Apertura", id: 19, country: "Mexico", slug: "liga_mx_apertura", enabled: true}
+  - {name: "Liga MX Clausura", id: 20, country: "Mexico", slug: "liga_mx_clausura", enabled: true}
+  - {name: "CONCACAF Gold Cup 2025", id: 69, country: "North America", slug: "gold_cup", enabled: false}
+  - {name: "CONCACAF Nations League", id: 65, country: "North America", slug: "concacaf_nations_league", enabled: false}
+  - {name: "World Cup Qualification CONCACAF", id: 62, country: "North America", slug: "wcq_concacaf", enabled: false}
+
+  # WORLD
+  - {name: "World Cup 2026", id: 27, country: "International", slug: "world_cup_2026", enabled: false}
+  - {name: "International Friendly Games", id: 31, country: "International", slug: "friendlies", enabled: false}
+  - {name: "Club Friendlies", id: 79, country: "World", slug: "club_friendlies", enabled: false}
+
+settings:
+  max_matches_per_league: 12
+  min_history_matches: 120
+  history_seasons: 4
+  request_delay: 0.35
+
+# ------------------------------------------------------------------
+# Betting rules. These protect you; loosening them raises your risk.
+# bankroll = money you can afford to LOSE completely. Never savings.
+# ------------------------------------------------------------------
+betting:
+  bankroll: 100.0
+  min_edge: 0.06
+  model_weight: 0.3
+  kelly_fraction: 0.20
+  max_stake_pct: 0.015
+  max_daily_exposure_pct: 0.05
+  min_odds: 1.40
+  max_odds: 4.00
