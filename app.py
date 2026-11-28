@@ -1,12 +1,11 @@
 """
 Streamlit frontend for the Football ML Prediction System (v2)
 Run locally:  streamlit run app.py
-Deploy:       push to GitHub → Streamlit Community Cloud / Hugging Face Spaces
+Deploy:       push to GitHub → Streamlit Community Cloud
 """
 
 from __future__ import annotations
 
-import io
 import sys
 import traceback
 from datetime import date, datetime, timezone
@@ -26,7 +25,6 @@ from src.trainer import train_league_model
 from src.utils import (
     PRED_DIR,
     get_all_leagues,
-    get_enabled_leagues,
     load_leagues_config,
     load_manual_odds,
     save_active_leagues,
@@ -70,15 +68,26 @@ def _today_utc() -> str:
     return datetime.now(timezone.utc).date().strftime("%Y-%m-%d")
 
 
+@st.cache_data(show_spinner=False)
+def load_all_league_options():
+    """Return (all_league_dicts, name_to_league, default_selected_names)."""
+    all_leagues = get_all_leagues("leagues.yaml")
+    name_to_league = {lg["name"]: lg for lg in all_leagues}
+    # Default selection = those marked enabled: true in the YAML
+    default_names = [lg["name"] for lg in all_leagues if lg.get("enabled", True)]
+    return all_leagues, name_to_league, default_names
+
+
 def run_pipeline(
+    selected_leagues: list[dict],
     download_fresh: bool,
     only_today: bool,
     target_date: str | None,
     progress_callback=None,
 ) -> tuple[pd.DataFrame, pd.DataFrame, dict]:
     """
-    Core pipeline extracted from main.py so both CLI and Streamlit can use it.
-    Returns (predictions_df, value_bets_df, summary_dict).
+    Core pipeline. Only runs the leagues the user selected.
+    If only_today is True, further filters to leagues that actually have fixtures.
     """
     if target_date is None:
         target_date = _today_utc()
@@ -90,19 +99,24 @@ def run_pipeline(
     min_history = settings.get("min_history_matches", 120)
     seasons_back = settings.get("history_seasons", 4)
 
-    if only_today:
-        all_leagues = get_all_leagues("leagues.yaml")
-        leagues = find_leagues_with_matches_today(all_leagues, target_date=target_date)
+    leagues = list(selected_leagues)
+
+    if only_today and leagues:
+        # Keep only those that have fixtures on the target date
+        with_fixtures = find_leagues_with_matches_today(leagues, target_date=target_date)
+        # Preserve order / user selection as much as possible
+        fixture_ids = {lg["id"] for lg in with_fixtures}
+        leagues = [lg for lg in leagues if lg["id"] in fixture_ids]
         save_active_leagues(leagues, target_date=target_date)
-    else:
-        leagues = get_enabled_leagues("leagues.yaml")
 
     if not leagues:
         return pd.DataFrame(), pd.DataFrame(), {
-            "message": "No leagues have fixtures on that date.",
+            "message": "No selected leagues have fixtures on that date (or none selected).",
             "success": 0,
             "skipped": 0,
             "bet_settings": bet_settings,
+            "n_leagues": 0,
+            "target_date": target_date,
         }
 
     manual_odds = load_manual_odds()
@@ -158,7 +172,7 @@ def run_pipeline(
     bets = apply_daily_cap(all_bets, bet_settings)
     bets_df = pd.DataFrame(bets) if bets else pd.DataFrame()
 
-    # Persist latest CSVs so you can also download them
+    # Persist latest CSVs
     PRED_DIR.mkdir(parents=True, exist_ok=True)
     stamp = datetime.now().strftime("%Y%m%d_%H%M")
     if not preds_df.empty:
@@ -188,6 +202,9 @@ def load_cached_results() -> tuple[pd.DataFrame, pd.DataFrame]:
 # ---------------------------------------------------------------------------
 # Sidebar controls
 # ---------------------------------------------------------------------------
+all_leagues, name_to_league, default_names = load_all_league_options()
+all_names = sorted(name_to_league.keys())
+
 with st.sidebar:
     st.title("⚽ Controls")
     st.caption("Football ML · Dixon-Coles v2")
@@ -202,13 +219,44 @@ with st.sidebar:
     only_today = st.toggle(
         "Only leagues with fixtures on this date",
         value=True,
-        help="If off, runs every league marked enabled in leagues.yaml",
+        help="Further filters your selected leagues to those that actually have matches",
     )
     download_fresh = st.toggle(
         "Download fresh data",
         value=True,
         help="Turn off to reuse CSVs already in data/raw (faster)",
     )
+
+    st.divider()
+    st.subheader("Leagues to run")
+
+    # Quick action buttons
+    col_a, col_b, col_c = st.columns(3)
+    with col_a:
+        if st.button("All", use_container_width=True):
+            st.session_state["selected_leagues"] = all_names
+    with col_b:
+        if st.button("YAML", use_container_width=True, help="Only those enabled in leagues.yaml"):
+            st.session_state["selected_leagues"] = default_names
+    with col_c:
+        if st.button("None", use_container_width=True):
+            st.session_state["selected_leagues"] = []
+
+    # Initialise session state once
+    if "selected_leagues" not in st.session_state:
+        st.session_state["selected_leagues"] = default_names
+
+    selected_names = st.multiselect(
+        "Select leagues",
+        options=all_names,
+        default=st.session_state["selected_leagues"],
+        help="Only the leagues you tick here will be processed",
+        key="league_multiselect",
+    )
+    # Keep session state in sync
+    st.session_state["selected_leagues"] = selected_names
+
+    st.caption(f"{len(selected_names)} league(s) selected")
 
     st.divider()
     st.subheader("Odds (optional)")
@@ -237,11 +285,19 @@ with st.sidebar:
 st.title("Football Value Bet Finder")
 st.markdown(
     f"Target date: **{target_str}** · "
-    f"Mode: {'fixtures today only' if only_today else 'all enabled leagues'}"
+    f"Selected: **{len(selected_names)}** leagues · "
+    f"{'fixtures filter ON' if only_today else 'fixtures filter OFF'}"
 )
+
+# Resolve selected league dicts
+selected_leagues = [name_to_league[n] for n in selected_names if n in name_to_league]
 
 # Run or show cached
 if run_btn:
+    if not selected_leagues:
+        st.warning("Please select at least one league in the sidebar.")
+        st.stop()
+
     progress = st.progress(0, text="Starting…")
     status = st.empty()
 
@@ -252,6 +308,7 @@ if run_btn:
     try:
         with st.spinner("Running pipeline (download → train → predict)…"):
             preds_df, bets_df, summary = run_pipeline(
+                selected_leagues=selected_leagues,
                 download_fresh=download_fresh,
                 only_today=only_today,
                 target_date=target_str,
@@ -309,7 +366,6 @@ if bets_df is not None and not bets_df.empty:
             """,
             unsafe_allow_html=True,
         )
-    # Download button
     csv = bets_df.to_csv(index=False).encode("utf-8")
     st.download_button(
         "Download value bets CSV",
@@ -334,7 +390,6 @@ else:
 st.header("📊 All predictions")
 
 if preds_df is not None and not preds_df.empty:
-    # Compact view for phone
     show_cols = [
         c
         for c in [
@@ -362,7 +417,6 @@ if preds_df is not None and not preds_df.empty:
         if c in preds_df.columns
     ]
     display = preds_df[show_cols].copy()
-    # nicer percentages
     for c in ["TopProb", "H", "D", "A", "Over25", "BTTS_Yes"]:
         if c in display.columns:
             display[c] = (display[c] * 100).round(1).astype(str) + "%"
@@ -382,7 +436,7 @@ if preds_df is not None and not preds_df.empty:
         mime="text/csv",
     )
 else:
-    st.write("No predictions yet. Press **Run predictions** in the sidebar.")
+    st.write("No predictions yet. Select leagues in the sidebar and press **Run predictions**.")
 
 # ---------------------------------------------------------------------------
 # Quick stats
